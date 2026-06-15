@@ -1,0 +1,65 @@
+<!doctype html>
+<!--
+ Copyright 2026 Circle Internet Group, Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ SPDX-License-Identifier: Apache-2.0
+-->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send USDC on Arc Testnet</title>
+    <style>
+      header > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-block-end: 1em;
+      }
+      p {
+        margin: 0;
+      }
+      pre:not(:empty) {
+        background-color: ghostwhite;
+        padding: 1em;
+        max-width: 100%;
+        overflow: auto;
+        border-radius: 0.5em;
+        max-height: calc(100vh - 9em);
+        word-break: break-all;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <button id="connectWallet">Connect wallet</button>
+        <p id="walletInfo"></p>
+      </div>
+    </header>
+    <main>
+      <form>
+        <label for="recipientAddress">Recipient Address</label>
+        <input id="recipientAddress" placeholder="0x..." required />
+        <button id="send" disabled>Send USDC</button>
+      </form>
+
+      <pre id="output"></pre>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

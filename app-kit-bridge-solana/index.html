@@ -1,0 +1,64 @@
+<!doctype html>
+<!--
+ Copyright 2026 Circle Internet Group, Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ SPDX-License-Identifier: Apache-2.0
+-->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bridge Kit (Solana to EVM)</title>
+    <style>
+      header > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-block-end: 1em;
+      }
+      p {
+        margin: 0;
+      }
+      pre:not(:empty) {
+        background-color: ghostwhite;
+        padding: 1em;
+        max-width: 100%;
+        overflow: auto;
+        border-radius: 0.5em;
+        max-height: calc(100vh - 12em);
+        word-break: break-all;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <button id="connectEvm">Connect EVM wallet</button>
+        <p id="evmWalletInfo"></p>
+      </div>
+      <div>
+        <button id="connectSol">Connect Solana wallet</button>
+        <p id="solanaWalletInfo"></p>
+      </div>
+    </header>
+    <main>
+      <button id="bridge" disabled>Bridge USDC</button>
+      <pre id="output"></pre>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

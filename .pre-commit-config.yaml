@@ -1,0 +1,19 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check-copyright-typescript
+        name: Check copyright header - typescript
+        entry: ./scripts/check-copyright-header.sh
+        language: script
+        types: [ts]
+        exclude: |
+            (?x)^(
+                .github/.*|
+                build/.*|
+                dist/.*|
+                node_modules/.*|
+                docs/.*|
+                .*\.d\.ts$|
+                .*\.json$|
+                .*\.md$
+            )$

@@ -1,0 +1,13 @@
+{
+  "name": "entity-secret-setup",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "tsx": "^4.22.3",
+    "@circle-fin/developer-controlled-wallets": "^10.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3"
+  }
+}
