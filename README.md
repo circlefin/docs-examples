@@ -33,6 +33,15 @@ adapter. Connects to any EIP-6963 browser wallet (e.g., MetaMask).
 
 Run with `npm install && npm run dev`.
 
+### [`app-kit-transfer-widget`](./app-kit-transfer-widget)
+
+React + Vite widget that lets a connected wallet send USDC same-chain or
+bridge it crosschain using [App Kit](https://www.npmjs.com/package/@circle-fin/app-kit)'s
+`send()`, `bridge()`, and `retryBridge()`. Connects to EIP-6963 EVM wallets
+and Solana browser wallets. No environment variables or API keys required.
+
+Run with `npm install && npm run dev`.
+
 ### [`entity-secret-setup`](./entity-secret-setup)
 
 Node.js script that generates a new entity secret, registers it with Circle,
