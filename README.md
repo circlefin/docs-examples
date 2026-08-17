@@ -42,6 +42,36 @@ Intended for first-time setup of
 See [`entity-secret-setup/README.md`](./entity-secret-setup/README.md) for
 prerequisites and security notes.
 
+### [`user-controlled-wallets-pin`](./user-controlled-wallets-pin)
+
+PIN path for
+[user-controlled wallets](https://developers.circle.com/wallets/user-controlled):
+create a PIN-secured wallet (challenge → `execute` → list), then continue,
+reset, or recover the PIN. Uses
+[`@circle-fin/user-controlled-wallets`](https://www.npmjs.com/package/@circle-fin/user-controlled-wallets)
+and
+[`@circle-fin/w3s-pw-web-sdk`](https://www.npmjs.com/package/@circle-fin/w3s-pw-web-sdk).
+See [`user-controlled-wallets-pin/README.md`](./user-controlled-wallets-pin/README.md).
+
+Run `npm run server` and `npm run dev` in separate terminals.
+
+### [`user-controlled-wallets-email`](./user-controlled-wallets-email)
+
+Email OTP path for user-controlled wallets: OTP login, then initialize
+(challenge on first login) and list wallets. Same packages as the PIN sample.
+See [`user-controlled-wallets-email/README.md`](./user-controlled-wallets-email/README.md).
+
+Run `npm run server` and `npm run dev` in separate terminals.
+
+### [`user-controlled-wallets-social`](./user-controlled-wallets-social)
+
+Google social login path for user-controlled wallets: OAuth login, then
+initialize (challenge on first login) and list wallets. Same packages as the
+PIN sample; also needs `VITE_GOOGLE_CLIENT_ID`.
+See [`user-controlled-wallets-social/README.md`](./user-controlled-wallets-social/README.md).
+
+Run `npm run server` and `npm run dev` in separate terminals.
+
 ## License
 
 Apache 2.0 — see [LICENSE](./LICENSE).

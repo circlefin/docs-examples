@@ -1,0 +1,23 @@
+{
+  "name": "user-controlled-wallets-social",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "node --env-file=.env --experimental-strip-types server.ts",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "~7.0.2",
+    "vite": "^8.2.1",
+    "vite-plugin-node-polyfills": "^0.28.0"
+  },
+  "dependencies": {
+    "@circle-fin/user-controlled-wallets": "^10.8.0",
+    "@circle-fin/w3s-pw-web-sdk": "^1.1.11",
+    "@hono/node-server": "^2.1.1",
+    "hono": "^4.13.2"
+  }
+}
