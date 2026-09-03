@@ -19,9 +19,8 @@
 import { AppKit } from "@circle-fin/app-kit";
 import type { SwapParams } from "@circle-fin/app-kit";
 import { createViemAdapterFromProvider } from "@circle-fin/adapter-viem-v2";
-import type { CreateViemAdapterFromProviderParams } from "@circle-fin/adapter-viem-v2";
-
-type BrowserWalletProvider = CreateViemAdapterFromProviderParams["provider"];
+import { connectEvmProvider } from "./connect.ts";
+import type { BrowserWalletProvider } from "./connect.ts";
 
 type EIP6963ProviderDetail = {
   info: {
@@ -72,19 +71,14 @@ async function handleWalletConnect() {
   try {
     connectWalletButton.disabled = true;
 
-    walletProvider = await getProvider();
-    await walletProvider.request({
-      method: "eth_requestAccounts",
-      params: undefined,
-    });
-    const accounts = (await walletProvider.request({
-      method: "eth_accounts",
-      params: undefined,
-    })) as string[];
+    const connection = await connectEvmProvider(await getProvider());
+    walletProvider = connection.provider;
 
-    walletInfo.textContent = accounts[0] ?? "Connected";
-    swapButton.disabled = !walletProvider;
+    walletInfo.textContent = connection.account ?? "Connected";
+    swapButton.disabled = false;
   } catch (error) {
+    walletProvider = null;
+    swapButton.disabled = true;
     render({ error: error instanceof Error ? error.message : "Unknown error" });
   } finally {
     connectWalletButton.disabled = Boolean(walletProvider);

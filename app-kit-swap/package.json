@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest run",
     "preview": "vite preview"
   },
   "devDependencies": {
     "typescript": "~7.0.2",
-    "vite": "^8.2.1"
+    "vite": "^8.2.1",
+    "vitest": "^4.1.9"
   },
   "dependencies": {
     "@circle-fin/adapter-viem-v2": "^1.15.1",
