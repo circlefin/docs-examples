@@ -19,10 +19,14 @@
 import { AppKit } from "@circle-fin/app-kit";
 import { createViemAdapterFromProvider } from "@circle-fin/adapter-viem-v2";
 import { createSolanaAdapterFromProvider } from "@circle-fin/adapter-solana";
-import type { CreateViemAdapterFromProviderParams } from "@circle-fin/adapter-viem-v2";
-import type { CreateSolanaAdapterFromProviderParams } from "@circle-fin/adapter-solana";
-
-type BrowserWalletProvider = CreateViemAdapterFromProviderParams["provider"];
+import {
+  connectEvmProvider,
+  connectSolanaProvider,
+} from "./connect.ts";
+import type {
+  BrowserWalletProvider,
+  SolanaWalletProvider,
+} from "./connect.ts";
 
 type EIP6963ProviderDetail = {
   info: {
@@ -33,8 +37,6 @@ type EIP6963ProviderDetail = {
   };
   provider: BrowserWalletProvider;
 };
-
-type SolanaWalletProvider = CreateSolanaAdapterFromProviderParams["provider"];
 
 declare global {
   interface WindowEventMap {
@@ -79,19 +81,14 @@ async function handleEvmConnect() {
   try {
     connectEvmButton.disabled = true;
 
-    evmProvider = await getProvider();
-    await evmProvider.request({
-      method: "eth_requestAccounts",
-      params: undefined,
-    });
-    const accounts = (await evmProvider.request({
-      method: "eth_accounts",
-      params: undefined,
-    })) as string[];
+    const connection = await connectEvmProvider(await getProvider());
+    evmProvider = connection.provider;
 
-    walletInfo.textContent = accounts[0] ?? "Connected";
-    bridgeButton.disabled = !evmProvider || !solanaProvider;
+    walletInfo.textContent = connection.account;
+    bridgeButton.disabled = !solanaProvider;
   } catch (error) {
+    evmProvider = null;
+    bridgeButton.disabled = true;
     render({ error: error instanceof Error ? error.message : "Unknown error" });
   } finally {
     connectEvmButton.disabled = Boolean(evmProvider);
@@ -107,14 +104,13 @@ async function handleSolanaConnect() {
       throw new Error("No Solana browser wallet found");
     }
 
-    solanaProvider = window.solana;
-    const connection = await solanaProvider.connect();
-    solanaWalletInfo.textContent =
-      connection.publicKey?.toString() ??
-      solanaProvider.publicKey?.toString() ??
-      "Connected";
-    bridgeButton.disabled = !evmProvider || !solanaProvider;
+    const connection = await connectSolanaProvider(window.solana);
+    solanaProvider = connection.provider;
+    solanaWalletInfo.textContent = connection.address;
+    bridgeButton.disabled = !evmProvider;
   } catch (error) {
+    solanaProvider = null;
+    bridgeButton.disabled = true;
     render({ error: error instanceof Error ? error.message : "Unknown error" });
   } finally {
     connectSolButton.disabled = Boolean(solanaProvider);

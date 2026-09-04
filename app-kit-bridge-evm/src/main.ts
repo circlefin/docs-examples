@@ -18,9 +18,8 @@
 
 import { AppKit } from "@circle-fin/app-kit";
 import { createViemAdapterFromProvider } from "@circle-fin/adapter-viem-v2";
-import type { CreateViemAdapterFromProviderParams } from "@circle-fin/adapter-viem-v2";
-
-type BrowserWalletProvider = CreateViemAdapterFromProviderParams["provider"];
+import { connectEvmProvider } from "./connect.ts";
+import type { BrowserWalletProvider } from "./connect.ts";
 
 type EIP6963ProviderDetail = {
   info: {
@@ -71,19 +70,14 @@ async function handleEvmConnect() {
   try {
     connectEvmButton.disabled = true;
 
-    evmProvider = await getProvider();
-    await evmProvider.request({
-      method: "eth_requestAccounts",
-      params: undefined,
-    });
-    const accounts = (await evmProvider.request({
-      method: "eth_accounts",
-      params: undefined,
-    })) as string[];
+    const connection = await connectEvmProvider(await getProvider());
+    evmProvider = connection.provider;
 
-    walletInfo.textContent = accounts[0] ?? "Connected";
-    bridgeButton.disabled = !evmProvider;
+    walletInfo.textContent = connection.account;
+    bridgeButton.disabled = false;
   } catch (error) {
+    evmProvider = null;
+    bridgeButton.disabled = true;
     render({ error: error instanceof Error ? error.message : "Unknown error" });
   } finally {
     connectEvmButton.disabled = Boolean(evmProvider);
