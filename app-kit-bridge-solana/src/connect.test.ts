@@ -32,7 +32,6 @@ describe("wallet connection", () => {
     const provider = {
       request: vi
         .fn()
-        .mockResolvedValueOnce(undefined)
         .mockResolvedValueOnce([account]),
     } as unknown as BrowserWalletProvider;
 
@@ -40,6 +39,7 @@ describe("wallet connection", () => {
       provider,
       account,
     });
+    expect(provider.request).toHaveBeenCalledTimes(1);
   });
 
   it("does not return an EVM provider when permission is rejected", async () => {
@@ -49,6 +49,17 @@ describe("wallet connection", () => {
     } as unknown as BrowserWalletProvider;
 
     await expect(connectEvmProvider(provider)).rejects.toBe(rejection);
+    expect(provider.request).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not return an EVM provider when permission returns no account", async () => {
+    const provider = {
+      request: vi.fn().mockResolvedValue([]),
+    } as unknown as BrowserWalletProvider;
+
+    await expect(connectEvmProvider(provider)).rejects.toThrow(
+      "No account returned after wallet permission",
+    );
     expect(provider.request).toHaveBeenCalledTimes(1);
   });
 
@@ -73,5 +84,17 @@ describe("wallet connection", () => {
       provider,
       address: "solana-address",
     });
+  });
+
+  it("does not return a Solana provider when connection returns no address", async () => {
+    const provider = {
+      connect: vi.fn().mockResolvedValue({}),
+      publicKey: null,
+    } as unknown as SolanaWalletProvider;
+
+    await expect(connectSolanaProvider(provider)).rejects.toThrow(
+      "No address returned after wallet connection",
+    );
+    expect(provider.connect).toHaveBeenCalledTimes(1);
   });
 });

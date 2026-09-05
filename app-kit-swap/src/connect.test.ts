@@ -21,11 +21,10 @@ import { connectEvmProvider } from "./connect.ts";
 import type { BrowserWalletProvider } from "./connect.ts";
 
 describe("connectEvmProvider", () => {
-  it("returns the provider only after permission and account lookup succeed", async () => {
+  it("returns the provider only after permission returns an account", async () => {
     const provider = {
       request: vi
         .fn()
-        .mockResolvedValueOnce(undefined)
         .mockResolvedValueOnce(["0x2222222222222222222222222222222222222222"]),
     } as unknown as BrowserWalletProvider;
 
@@ -37,10 +36,7 @@ describe("connectEvmProvider", () => {
       method: "eth_requestAccounts",
       params: undefined,
     });
-    expect(provider.request).toHaveBeenNthCalledWith(2, {
-      method: "eth_accounts",
-      params: undefined,
-    });
+    expect(provider.request).toHaveBeenCalledTimes(1);
   });
 
   it("does not return a connected provider when permission is rejected", async () => {
@@ -50,6 +46,17 @@ describe("connectEvmProvider", () => {
     } as unknown as BrowserWalletProvider;
 
     await expect(connectEvmProvider(provider)).rejects.toBe(rejection);
+    expect(provider.request).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not return a connected provider when permission returns no account", async () => {
+    const provider = {
+      request: vi.fn().mockResolvedValue([]),
+    } as unknown as BrowserWalletProvider;
+
+    await expect(connectEvmProvider(provider)).rejects.toThrow(
+      "No account returned after wallet permission",
+    );
     expect(provider.request).toHaveBeenCalledTimes(1);
   });
 });

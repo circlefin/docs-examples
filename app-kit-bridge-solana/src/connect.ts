@@ -25,22 +25,25 @@ export type SolanaWalletProvider =
   CreateSolanaAdapterFromProviderParams["provider"];
 
 export async function connectEvmProvider(provider: BrowserWalletProvider) {
-  await provider.request({
+  const accounts = (await provider.request({
     method: "eth_requestAccounts",
     params: undefined,
-  });
-  const accounts = (await provider.request({
-    method: "eth_accounts",
-    params: undefined,
   })) as string[];
+  const account = accounts[0];
+  if (!account) {
+    throw new Error("No account returned after wallet permission");
+  }
 
-  return { provider, account: accounts[0] };
+  return { provider, account };
 }
 
 export async function connectSolanaProvider(provider: SolanaWalletProvider) {
   const connection = await provider.connect();
   const address =
     connection.publicKey?.toString() ?? provider.publicKey?.toString();
+  if (!address) {
+    throw new Error("No address returned after wallet connection");
+  }
 
   return { provider, address };
 }

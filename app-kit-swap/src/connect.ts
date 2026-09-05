@@ -22,14 +22,14 @@ export type BrowserWalletProvider =
   CreateViemAdapterFromProviderParams["provider"];
 
 export async function connectEvmProvider(provider: BrowserWalletProvider) {
-  await provider.request({
+  const accounts = (await provider.request({
     method: "eth_requestAccounts",
     params: undefined,
-  });
-  const accounts = (await provider.request({
-    method: "eth_accounts",
-    params: undefined,
   })) as string[];
+  const account = accounts[0];
+  if (!account) {
+    throw new Error("No account returned after wallet permission");
+  }
 
-  return { provider, account: accounts[0] };
+  return { provider, account };
 }
