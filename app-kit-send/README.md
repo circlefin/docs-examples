@@ -1,12 +1,10 @@
 # Send USDC on an EVM chain
 
 Use [`@circle-fin/app-kit`](https://www.npmjs.com/package/@circle-fin/app-kit)
-to estimate and send USDC on Arc Testnet with a browser wallet and the viem
-adapter.
+to send USDC on Arc Testnet with a browser wallet and the viem adapter.
 
 This Vite + TypeScript page connects an EIP-6963 wallet (for example MetaMask),
-creates a Circle adapter from the provider, then calls `estimateSend()` and
-`send()`.
+creates a Circle adapter from the provider, then calls `send()`.
 
 ## Prerequisites
 
@@ -34,11 +32,10 @@ npm run build
 
 1. Discovers an EIP-6963 browser wallet and requests account access.
 2. Creates a viem adapter with `createViemAdapterFromProvider()`.
-3. Estimates the transfer with `kit.estimateSend()`.
-4. Sends 1 USDC on `Arc_Testnet` to the entered recipient with `kit.send()`.
+3. Sends 1 USDC on `Arc_Testnet` to the entered recipient with `kit.send()`.
 
 ## Key file
 
-- `src/main.ts` — wallet connect, adapter creation, estimate, and send.
+- `src/main.ts` — wallet connect, adapter creation, and send.
   Change `chain`, `amount`, and `token` in the send params for a different
   chain, amount, or token.

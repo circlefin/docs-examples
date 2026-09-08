@@ -52,7 +52,7 @@ Run with `npm install && npm run dev`.
 
 ### [`app-kit-unified-balance`](./app-kit-unified-balance)
 
-Browser app that deposits USDC into a unified balance from Base Sepolia and
+Browser app that deposits USDC into a unified balance from Avalanche Fuji and
 Solana Devnet, reads the balance, and spends it on Arc Testnet using
 [App Kit](https://www.npmjs.com/package/@circle-fin/app-kit) with the viem and
 Solana adapters. Connects an EVM wallet and a Solana wallet.

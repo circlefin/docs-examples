@@ -17,7 +17,6 @@
  */
 
 import { AppKit } from "@circle-fin/app-kit";
-import type { SendParams } from "@circle-fin/app-kit";
 import { createViemAdapterFromProvider } from "@circle-fin/adapter-viem-v2";
 import type { CreateViemAdapterFromProviderParams } from "@circle-fin/adapter-viem-v2";
 
@@ -83,15 +82,19 @@ async function handleWalletConnect() {
     })) as string[];
 
     walletInfo.textContent = accounts[0] ?? "Connected";
+    output.textContent = "";
     sendButton.disabled = !walletProvider;
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    walletProvider = null;
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectWalletButton.disabled = Boolean(walletProvider);
   }
 }
 
-/** Estimate and send 1 USDC on Arc Testnet to the recipient. */
+/** Send 1 USDC on Arc Testnet to the recipient. */
 async function handleSend(event: Event) {
   event.preventDefault();
 
@@ -111,19 +114,18 @@ async function handleSend(event: Event) {
       provider: walletProvider,
     });
 
-    const sendParams: SendParams = {
+    const result = await kit.send({
       from: { adapter, chain: "Arc_Testnet" },
       to: recipientAddress,
       amount: "1.00",
       token: "USDC",
-    };
+    });
 
-    const estimate = await kit.estimateSend(sendParams);
-    const result = await kit.send(sendParams);
-
-    render({ estimate, result });
+    render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     sendButton.disabled = false;
   }
