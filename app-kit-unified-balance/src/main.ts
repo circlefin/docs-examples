@@ -17,7 +17,7 @@
  */
 
 import { AppKit } from "@circle-fin/app-kit";
-import { ArcTestnet, BaseSepolia, SolanaDevnet } from "@circle-fin/app-kit/chains";
+import { ArcTestnet, AvalancheFuji, SolanaDevnet } from "@circle-fin/app-kit/chains";
 import { createSolanaAdapterFromProvider } from "@circle-fin/adapter-solana";
 import type {
   CreateSolanaAdapterFromProviderParams,
@@ -45,6 +45,7 @@ type EIP6963ProviderDetail = {
 declare global {
   interface Window {
     solana?: SolanaWalletProvider;
+    solflare?: SolanaWalletProvider;
   }
 
   interface WindowEventMap {
@@ -81,7 +82,7 @@ async function getEvmProvider(): Promise<EvmWalletProvider> {
   return selectedProvider;
 }
 
-/** Connect the EVM wallet and build an adapter for Base Sepolia + Arc Testnet. */
+/** Connect the EVM wallet and build an adapter for Avalanche Fuji + Arc Testnet. */
 async function handleEvmConnect() {
   try {
     connectEvmButton.disabled = true;
@@ -100,13 +101,16 @@ async function handleEvmConnect() {
     evmAdapter = await createViemAdapterFromProvider({
       provider,
       capabilities: {
-        supportedChains: [BaseSepolia, ArcTestnet],
+        supportedChains: [AvalancheFuji, ArcTestnet],
       },
     });
     evmWalletInfo.textContent = accounts[0] ?? "Connected";
+    output.textContent = "";
   } catch (error) {
     evmAdapter = null;
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectEvmButton.disabled = Boolean(evmAdapter);
     updateActionButtons();
@@ -118,7 +122,8 @@ async function handleSolanaConnect() {
   try {
     connectSolanaButton.disabled = true;
 
-    const provider = window.solana;
+    // Prefer Solflare when present; fall back to window.solana (e.g. Phantom).
+    const provider = window.solflare ?? window.solana;
     if (!provider) {
       throw new Error("No Solana browser wallet found");
     }
@@ -135,36 +140,41 @@ async function handleSolanaConnect() {
       },
     });
     solanaWalletInfo.textContent = connectedAddress ?? "Connected";
+    output.textContent = "";
   } catch (error) {
     solanaAdapter = null;
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectSolanaButton.disabled = Boolean(solanaAdapter);
     updateActionButtons();
   }
 }
 
-/** Deposit 2 USDC from Base Sepolia into the unified balance. */
-async function handleDepositBase() {
+/** Deposit 2 USDC from Avalanche Fuji into the unified balance. */
+async function handleDepositFuji() {
   try {
     if (!evmAdapter) {
       throw new Error("Connect an EVM wallet first");
     }
 
-    depositBaseButton.disabled = true;
+    depositFujiButton.disabled = true;
 
-    // Switch the wallet to Base Sepolia before depositing
-    await evmAdapter.ensureChain(BaseSepolia);
+    // Switch the wallet to Avalanche Fuji before depositing
+    await evmAdapter.ensureChain(AvalancheFuji);
 
     const result = await kit.unifiedBalance.deposit({
-      from: { adapter: evmAdapter, chain: "Base_Sepolia" },
+      from: { adapter: evmAdapter, chain: "Avalanche_Fuji" },
       amount: "2.00",
       token: "USDC",
     });
 
     render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     updateActionButtons();
   }
@@ -187,7 +197,9 @@ async function handleDepositSolana() {
 
     render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     updateActionButtons();
   }
@@ -212,7 +224,9 @@ async function handleCheckBalance() {
 
     render(balances);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     updateActionButtons();
   }
@@ -245,7 +259,9 @@ async function handleSpend(event: SubmitEvent) {
 
     render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     updateActionButtons();
   }
@@ -256,7 +272,7 @@ function updateActionButtons() {
   const hasEvmAdapter = Boolean(evmAdapter);
   const hasSolanaAdapter = Boolean(solanaAdapter);
 
-  depositBaseButton.disabled = !hasEvmAdapter;
+  depositFujiButton.disabled = !hasEvmAdapter;
   depositSolanaButton.disabled = !hasSolanaAdapter;
   checkBalanceButton.disabled = !hasEvmAdapter && !hasSolanaAdapter;
   spendButton.disabled = !(hasEvmAdapter && hasSolanaAdapter);
@@ -276,8 +292,8 @@ function render(value: unknown) {
 const connectEvmButton = document.querySelector<HTMLButtonElement>("#connectEvm")!;
 const connectSolanaButton =
   document.querySelector<HTMLButtonElement>("#connectSolana")!;
-const depositBaseButton =
-  document.querySelector<HTMLButtonElement>("#depositBase")!;
+const depositFujiButton =
+  document.querySelector<HTMLButtonElement>("#depositFuji")!;
 const depositSolanaButton =
   document.querySelector<HTMLButtonElement>("#depositSolana")!;
 const checkBalanceButton =
@@ -293,7 +309,7 @@ const output = document.querySelector<HTMLPreElement>("#output")!;
 
 connectEvmButton.addEventListener("click", handleEvmConnect);
 connectSolanaButton.addEventListener("click", handleSolanaConnect);
-depositBaseButton.addEventListener("click", handleDepositBase);
+depositFujiButton.addEventListener("click", handleDepositFuji);
 depositSolanaButton.addEventListener("click", handleDepositSolana);
 checkBalanceButton.addEventListener("click", handleCheckBalance);
 spendForm.addEventListener("submit", handleSpend);

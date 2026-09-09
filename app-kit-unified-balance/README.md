@@ -14,7 +14,7 @@ Circle adapters with the chains this demo uses, then calls
 - [Node.js 22 or later](https://nodejs.org/)
 - An EIP-6963 EVM browser wallet such as MetaMask
 - A Solana browser wallet on `window.solana` such as Phantom
-- Testnet USDC on Base Sepolia and Solana Devnet
+- Testnet USDC on Avalanche Fuji and Solana Devnet
 - Native gas tokens for both wallets
 
 This project does not require environment variables or API keys.
@@ -34,14 +34,24 @@ npm run build
 
 ## What this example does
 
-1. Connects an EVM wallet and builds a viem adapter for Base Sepolia and Arc
+1. Connects an EVM wallet and builds a viem adapter for Avalanche Fuji and Arc
    Testnet.
 2. Connects a Solana wallet and builds a Solana adapter for Solana Devnet.
-3. Deposits 2 USDC from Base Sepolia with `kit.unifiedBalance.deposit()`.
+3. Deposits 2 USDC from Avalanche Fuji with `kit.unifiedBalance.deposit()`.
 4. Deposits 1 USDC from Solana Devnet with `kit.unifiedBalance.deposit()`.
 5. Reads the unified balance with `kit.unifiedBalance.getBalances()`.
 6. Spends 2.50 USDC to a recipient on Arc Testnet with
    `kit.unifiedBalance.spend()`.
+
+## Spend signing (EVM + Solana)
+
+This demo deposits on Avalanche Fuji (2 USDC) and Solana Devnet (1 USDC), then
+spends 2.50 USDC. Auto-allocation therefore draws from **both** wallets.
+
+EVM burn intents can share one EIP-712 `BurnIntentSet` signature. Solana uses a
+separate Ed25519 signature and cannot join that set. Expect **two wallet
+prompts** on Spend: one in your EVM wallet, then one in your Solana wallet.
+Both signed intents still go in a single Gateway transfer.
 
 ## Key file
 

@@ -17,7 +17,6 @@
  */
 
 import { AppKit } from "@circle-fin/app-kit";
-import type { SwapParams } from "@circle-fin/app-kit";
 import { createViemAdapterFromProvider } from "@circle-fin/adapter-viem-v2";
 import type { CreateViemAdapterFromProviderParams } from "@circle-fin/adapter-viem-v2";
 
@@ -83,15 +82,19 @@ async function handleWalletConnect() {
     })) as string[];
 
     walletInfo.textContent = accounts[0] ?? "Connected";
+    output.textContent = "";
     swapButton.disabled = !walletProvider;
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    walletProvider = null;
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectWalletButton.disabled = Boolean(walletProvider);
   }
 }
 
-/** Estimate and swap 1 USDC for EURC on Arc Testnet. */
+/** Swap 1 USDC for EURC on Arc Testnet. */
 async function handleSwap() {
   try {
     if (!walletProvider) {
@@ -104,19 +107,18 @@ async function handleSwap() {
       provider: walletProvider,
     });
 
-    const swapParams: SwapParams = {
+    const result = await kit.swap({
       from: { adapter, chain: "Arc_Testnet" },
       tokenIn: "USDC",
       tokenOut: "EURC",
       amountIn: "1.00",
-    };
+    });
 
-    const estimate = await kit.estimateSwap(swapParams);
-    const result = await kit.swap(swapParams);
-
-    render({ estimate, result });
+    render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     swapButton.disabled = false;
   }

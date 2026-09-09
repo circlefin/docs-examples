@@ -90,9 +90,13 @@ async function handleEvmConnect() {
     })) as string[];
 
     walletInfo.textContent = accounts[0] ?? "Connected";
+    output.textContent = "";
     bridgeButton.disabled = !evmProvider || !solanaProvider;
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    evmProvider = null;
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectEvmButton.disabled = Boolean(evmProvider);
   }
@@ -113,9 +117,13 @@ async function handleSolanaConnect() {
       connection.publicKey?.toString() ??
       solanaProvider.publicKey?.toString() ??
       "Connected";
+    output.textContent = "";
     bridgeButton.disabled = !evmProvider || !solanaProvider;
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    solanaProvider = null;
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     connectSolButton.disabled = Boolean(solanaProvider);
   }
@@ -152,7 +160,9 @@ async function handleBridge() {
 
     render(result);
   } catch (error) {
-    render({ error: error instanceof Error ? error.message : "Unknown error" });
+    render({
+      error: (error as { message?: string })?.message ?? String(error),
+    });
   } finally {
     bridgeButton.disabled = false;
   }
