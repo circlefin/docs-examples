@@ -41,5 +41,18 @@ npm run build
 ## Key file
 
 - `src/main.ts` — wallet connect, adapter creation, bridge, and retry.
-  Change `from` / `to` `chain` and `amount` in the bridge call for different
-  chains or amounts.
+  Change `from` / `to` `chain`, `amount`, and optional `token` in the bridge
+  call for different chains, amounts, or tokens.
+
+## Bridge a non-USDC token
+
+This sample defaults to USDC. To bridge a
+[non-USDC token](https://developers.circle.com/cctp/expanded-assets), pass
+`token` on the same `kit.bridge()` call in `src/main.ts` — for example
+`token: "EURC"` (also `"wETH"`, `"cirBTC"`, or a configured asset's
+`tokenId`). Fund the source wallet with that token. `amount` stays a
+human-readable decimal string (EURC uses 6 decimals, cirBTC 8, wETH 18).
+
+Both chains must support CCTP for non-USDC, and the token must be configured on
+both. Check
+[supported blockchains and tokens](https://developers.circle.com/cctp/expanded-assets/concepts/supported-chains-and-domains).

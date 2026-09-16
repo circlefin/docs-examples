@@ -42,6 +42,7 @@ declare global {
   }
   interface Window {
     solana?: SolanaWalletProvider;
+    solflare?: SolanaWalletProvider;
   }
 }
 
@@ -107,11 +108,12 @@ async function handleSolanaConnect() {
   try {
     connectSolButton.disabled = true;
 
-    if (!window.solana) {
+    const provider = window.solana ?? window.solflare;
+    if (!provider) {
       throw new Error("No Solana browser wallet found");
     }
 
-    solanaProvider = window.solana;
+    solanaProvider = provider;
     const connection = await solanaProvider.connect();
     solanaWalletInfo.textContent =
       connection.publicKey?.toString() ??
