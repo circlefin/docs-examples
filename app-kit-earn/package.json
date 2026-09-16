@@ -1,5 +1,5 @@
 {
-  "name": "app-kit-unified-balance",
+  "name": "app-kit-earn",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -12,7 +12,6 @@
     "vite": "^8.3.0"
   },
   "dependencies": {
-    "@circle-fin/adapter-solana": "^1.7.3",
     "@circle-fin/adapter-viem-v2": "^1.18.0",
     "@circle-fin/app-kit": "^1.15.1",
     "viem": "^2.56.5"

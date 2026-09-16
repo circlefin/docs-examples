@@ -25,6 +25,25 @@ destination and a Solana wallet for the source.
 
 Run with `npm install && npm run dev`.
 
+### [`app-kit-earn`](./app-kit-earn)
+
+Browser app that discovers earn vaults on Arc Testnet, deposits and withdraws
+USDC, and checks a position using
+[App Kit](https://www.npmjs.com/package/@circle-fin/app-kit) with the viem
+adapter. Connects to any EIP-6963 browser wallet (e.g., MetaMask).
+
+Run with `npm install && npm run dev`.
+
+### [`app-kit-onramp`](./app-kit-onramp)
+
+Browser app that embeds the Arc Onramp widget with
+[App Kit](https://www.npmjs.com/package/@circle-fin/app-kit): mint a session on
+a small Node server, then `fetchSession()`, `mountIframe()`, or `openWindow()`.
+Requires a Circle API key; run the session server and Vite client together.
+
+Run with `npm install`, then `npm run server` and `npm run dev` in separate
+terminals.
+
 ### [`app-kit-send`](./app-kit-send)
 
 Browser app that estimates and sends USDC on Arc Testnet using

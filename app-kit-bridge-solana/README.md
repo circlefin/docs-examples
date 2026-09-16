@@ -12,7 +12,8 @@ calls `bridge()` and `retryBridge()` when needed.
 
 - [Node.js 22 or later](https://nodejs.org/)
 - An EIP-6963 EVM browser wallet such as MetaMask
-- A Solana browser wallet on `window.solana` such as Phantom
+- A Solana browser wallet such as Phantom (`window.solana`) or Solflare
+  (`window.solflare`)
 - Testnet USDC on Solana Devnet
 - Native gas tokens for both wallets
 
