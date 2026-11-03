@@ -9,15 +9,15 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.6.6",
     "typescript": "~7.0.2",
-    "vite": "^8.2.1",
+    "vite": "^8.3.5",
     "vite-plugin-node-polyfills": "^0.28.0"
   },
   "dependencies": {
-    "@circle-fin/user-controlled-wallets": "^10.8.0",
+    "@circle-fin/user-controlled-wallets": "^10.8.1",
     "@circle-fin/w3s-pw-web-sdk": "^1.1.11",
-    "@hono/node-server": "^2.1.1",
-    "hono": "^4.13.2"
+    "@hono/node-server": "^2.1.6",
+    "hono": "^4.13.16"
   }
 }
