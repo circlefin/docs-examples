@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sample app for non-USDC CCTP transfers with Bridge Kit or direct CCTP flow." />
+    <title>Non-USDC Crosschain Transfer Sample</title>
+  </head>
+  <body>
+    <header>
+      <h1>Non-USDC Crosschain Transfer</h1>
+    </header>
+    <main>
+      <p>
+        Transfer non-USDC assets with CCTP, using EURC, cirBTC, or a custom
+        token. Developer documentation at:
+        <a href="https://developers.circle.com/cctp/expanded-assets" target="_blank" rel="noopener noreferrer"
+          >CCTP for non-USDC assets</a>.
+      </p>
+
+      <button id="connect-wallet" type="button">Connect wallet</button>
+
+      <form id="transfer-form">
+        <div class="row">
+          <label class="transfer__token-kind">
+            <span>Token</span>
+            <select id="token-kind">
+              <option value="EURC">EURC</option>
+              <option value="cirBTC">cirBTC</option>
+              <option value="custom">Custom token ID</option>
+            </select>
+          </label>
+
+          <label class="transfer__token-id">
+            <span>Token ID</span>
+            <input id="token-id" type="text" placeholder="Alias token ID" spellcheck="false" readonly />
+          </label>
+
+          <label class="transfer__amount">
+            <span>Amount</span>
+            <input
+              id="amount"
+              type="text"
+              inputmode="decimal"
+              placeholder="0.00"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="transfer__source-chain">
+            <span>Source chain</span>
+            <select id="source-chain" required>
+              <option value="">Choose a source</option>
+            </select>
+          </label>
+
+          <label class="transfer__destination-chain">
+            <span>Destination chain</span>
+            <select id="destination-chain" required>
+              <option value="">Choose a destination</option>
+            </select>
+          </label>
+
+          <label class="transfer__recipient">
+            <span>Recipient</span>
+            <input
+              id="recipient"
+              type="text"
+              placeholder="0x..."
+            />
+          </label>
+        </div>
+
+        <button id="transfer-button" type="submit" disabled>Transfer</button>
+      </form>
+
+      <pre id="transfer-status" aria-live="polite"></pre>
+    </main>
+    <!-- Bridge Kit: /src/main.ts — CCTP flow: /src/direct.ts -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
