@@ -117,6 +117,10 @@ See [`user-controlled-wallets-social/README.md`](./user-controlled-wallets-socia
 
 Run `npm run server` and `npm run dev` in separate terminals.
 
+### [`modular-wallets-mobile-expo-starter`](./modular-wallets-mobile-expo-starter)
+
+A single-screen Expo testnet wallet for iOS and Android: create or reconnect a native passkey, unlock with Face ID / Touch ID / Android biometrics, receive test USDC, and review and approve a transfer. Includes the official Circle native bridge, app identity setup, and runnable checks; signed physical-device acceptance remains pending.
+
 ## License
 
 Apache 2.0 — see [LICENSE](./LICENSE).

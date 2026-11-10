@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["CircleModularWalletsNativeModule"]
+  },
+  "android": {
+    "modules": ["com.example.circlemodularwallets.CircleModularWalletsNativeModule"]
+  }
+}
