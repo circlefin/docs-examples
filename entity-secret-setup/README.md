@@ -35,7 +35,7 @@ npm install
 ## Run the script
 
 ```bash
-npx tsx index.ts
+npm start
 ```
 
 ## Important security notes
